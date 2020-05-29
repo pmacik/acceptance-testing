@@ -169,11 +169,11 @@ EOF
 
 allHelmCommands="completion create dependency env 2to3 get history install lint list package plugin pull push push-artifactory repo rollback search show status template test uninstall upgrade verify version"
 if [ "$SHELL_TYPE" = bash ]; then
-    allHelmGlobalFlags="--add-dir-header --alsologtostderr --debug --kube-context --kube-context= --kubeconfig --kubeconfig= --log-backtrace-at --log-backtrace-at= --log-dir --log-dir= --log-file --log-file-max-size --log-file-max-size= --log-file= --logtostderr --namespace --namespace= --registry-config --registry-config= --repository-cache --repository-cache= --repository-config --repository-config= --skip-headers --skip-log-headers --stderrthreshold --stderrthreshold= --v --v= --vmodule --vmodule= -n -v"
-    allHelmLongFlags="--add-dir-header --alsologtostderr --debug --kube-context --kube-context= --kubeconfig --kubeconfig= --log-backtrace-at --log-backtrace-at= --log-dir --log-dir= --log-file --log-file-max-size --log-file-max-size= --log-file= --logtostderr --namespace --namespace= --registry-config --registry-config= --repository-cache --repository-cache= --repository-config --repository-config= --skip-headers --skip-log-headers --stderrthreshold --stderrthreshold= --v --v= --vmodule --vmodule="
+    allHelmGlobalFlags="--add-dir-header --alsologtostderr --debug --kube-apiserver --kube-apiserver= --kube-context --kube-context= --kube-token --kube-token= --kubeconfig --kubeconfig= --log-backtrace-at --log-backtrace-at= --log-dir --log-dir= --log-file --log-file-max-size --log-file-max-size= --log-file= --logtostderr --namespace --namespace= --registry-config --registry-config= --repository-cache --repository-cache= --repository-config --repository-config= --skip-headers --skip-log-headers --stderrthreshold --stderrthreshold= --v --v= --vmodule --vmodule= -n -v"
+    allHelmLongFlags="--add-dir-header --alsologtostderr --debug --kube-apiserver --kube-apiserver= --kube-context --kube-context= --kube-token --kube-token= --kubeconfig --kubeconfig= --log-backtrace-at --log-backtrace-at= --log-dir --log-dir= --log-file --log-file-max-size --log-file-max-size= --log-file= --logtostderr --namespace --namespace= --registry-config --registry-config= --repository-cache --repository-cache= --repository-config --repository-config= --skip-headers --skip-log-headers --stderrthreshold --stderrthreshold= --v --v= --vmodule --vmodule="
 else
-    allHelmGlobalFlags="--add-dir-header --alsologtostderr --debug --kube-context --kube-context --kube-context --kubeconfig --kubeconfig --kubeconfig --log-backtrace-at --log-backtrace-at --log-backtrace-at --log-dir --log-dir --log-dir --log-file --log-file --log-file --log-file-max-size --log-file-max-size --log-file-max-size --logtostderr --namespace --namespace --namespace --registry-config --registry-config --registry-config --repository-cache --repository-cache --repository-cache --repository-config --repository-config --repository-config --skip-headers --skip-log-headers --stderrthreshold --stderrthreshold --stderrthreshold --v --v --v --vmodule --vmodule --vmodule -n -v"
-    allHelmLongFlags="--add-dir-header --alsologtostderr --debug --kube-context --kube-context --kube-context --kubeconfig --kubeconfig --kubeconfig --log-backtrace-at --log-backtrace-at --log-backtrace-at --log-dir --log-dir --log-dir --log-file --log-file --log-file --log-file-max-size --log-file-max-size --log-file-max-size --logtostderr --namespace --namespace --namespace --registry-config --registry-config --registry-config --repository-cache --repository-cache --repository-cache --repository-config --repository-config --repository-config --skip-headers --skip-log-headers --stderrthreshold --stderrthreshold --stderrthreshold --v --v --v --vmodule --vmodule --vmodule"
+    allHelmGlobalFlags="--add-dir-header --alsologtostderr --debug --kube-apiserver --kube-apiserver --kube-apiserver --kube-context --kube-context --kube-context --kube-token --kube-token --kube-token --kubeconfig --kubeconfig --kubeconfig --log-backtrace-at --log-backtrace-at --log-backtrace-at --log-dir --log-dir --log-dir --log-file --log-file --log-file --log-file-max-size --log-file-max-size --log-file-max-size --logtostderr --namespace --namespace --namespace --registry-config --registry-config --registry-config --repository-cache --repository-cache --repository-cache --repository-config --repository-config --repository-config --skip-headers --skip-log-headers --stderrthreshold --stderrthreshold --stderrthreshold --v --v --v --vmodule --vmodule --vmodule -n -v"
+    allHelmLongFlags="--add-dir-header --alsologtostderr --debug --kube-apiserver --kube-apiserver --kube-apiserver --kube-context --kube-context --kube-context --kube-token --kube-token --kube-token --kubeconfig --kubeconfig --kubeconfig --log-backtrace-at --log-backtrace-at --log-backtrace-at --log-dir --log-dir --log-dir --log-file --log-file --log-file --log-file-max-size --log-file-max-size --log-file-max-size --logtostderr --namespace --namespace --namespace --registry-config --registry-config --registry-config --repository-cache --repository-cache --repository-cache --repository-config --repository-config --repository-config --skip-headers --skip-log-headers --stderrthreshold --stderrthreshold --stderrthreshold --v --v --v --vmodule --vmodule --vmodule"
 fi
 
 #####################
@@ -295,34 +295,29 @@ _completionTests_verifyCompletion "helm dependenci" ""
 
 # Static completion for plugins
 _completionTests_verifyCompletion "helm push " ""
+_completionTests_verifyCompletion "helm 2to3 " "cleanup convert move"
+_completionTests_verifyCompletion "helm 2to3 c" "cleanup convert"
+_completionTests_verifyCompletion "helm 2to3 move " "config"
 
+_completionTests_verifyCompletion "helm 2to3 cleanup -" "$allHelmGlobalFlags -r -s --label --cleanup --storage"
+# For plugin completion, when there are more short flags than long flags, a long flag is created for the extra short flags
+# So here we expect the extra --t
+_completionTests_verifyCompletion "helm 2to3 convert -" "$allHelmGlobalFlags -l -s -t --t --label --storage"
+_completionTests_verifyCompletion "helm 2to3 move config --" "$allHelmLongFlags --dry-run"
 
-# ********* This tests are commented beacuse they are for 3.2 *********
-# _completionTests_verifyCompletion "helm 2to3 " "cleanup convert move"
-# _completionTests_verifyCompletion "helm 2to3 c" "cleanup convert"
-# _completionTests_verifyCompletion "helm 2to3 move " "config"
+#####################
+# Dynamic completions
+#####################
 
-# _completionTests_verifyCompletion "helm 2to3 cleanup -" "$allHelmGlobalFlags -r -s --label --cleanup --storage"
-# # For plugin completion, when there are more short flags than long flags, a long flag is created for the extra short flags
-# # So here we expect the extra --t
-# _completionTests_verifyCompletion "helm 2to3 convert -" "$allHelmGlobalFlags -l -s -t --t --label --storage"
-# _completionTests_verifyCompletion "helm 2to3 move config --" "$allHelmLongFlags --dry-run"
-
-# #####################
-# # Dynamic completions
-# #####################
-
-# # For release name completion
-# _completionTests_verifyCompletion "helm status " "athos porthos aramis"
-# _completionTests_verifyCompletion "helm history a" "athos aramis"
-# _completionTests_verifyCompletion "helm uninstall a" "athos aramis"
-# _completionTests_verifyCompletion "helm upgrade a" "athos aramis"
-# _completionTests_verifyCompletion "helm get manifest -n default " "athos porthos aramis"
-# _completionTests_verifyCompletion "helm --namespace gascony get manifest " "dartagnan"
-# _completionTests_verifyCompletion "helm --namespace gascony test d" "dartagnan"
-# _completionTests_verifyCompletion "helm rollback d" ""
-# **********************************************************************
-
+# For release name completion
+_completionTests_verifyCompletion "helm status " "athos porthos aramis"
+_completionTests_verifyCompletion "helm history a" "athos aramis"
+_completionTests_verifyCompletion "helm uninstall a" "athos aramis"
+_completionTests_verifyCompletion "helm upgrade a" "athos aramis"
+_completionTests_verifyCompletion "helm get manifest -n default " "athos porthos aramis"
+_completionTests_verifyCompletion "helm --namespace gascony get manifest " "dartagnan"
+_completionTests_verifyCompletion "helm --namespace gascony test d" "dartagnan"
+_completionTests_verifyCompletion "helm rollback d" ""
 
 # For the repo command
 _completionTests_verifyCompletion "helm repo remove " "stable zztest1 zztest2"
@@ -346,22 +341,18 @@ if [ ! -z ${ROBOT_HELM_V3} ]; then
     XDG_DATA_HOME=$tmp
 fi
 
-
-# ********* This tests are commented beacuse they are for 3.2 *********
-# # For the global --kube-context flag
-# if [ ! -z ${ROBOT_HELM_V3} ]; then
-#     # Feature not available in v2
-#     _completionTests_verifyCompletion "helm --kube-context " "dev1 dev2 accept prod"
-#     _completionTests_verifyCompletion "helm upgrade --kube-context " "dev1 dev2 accept prod"
-#     _completionTests_verifyCompletion "helm upgrade --kube-context d" "dev1 dev2"
-#     if [ "$SHELL_TYPE" = bash ]; then
-#         _completionTests_verifyCompletion "helm --kube-context=" "dev1 dev2 accept prod"
-#     else
-#         _completionTests_verifyCompletion "helm --kube-context=" "--kube-context=dev1 --kube-context=dev2 --kube-context=accept --kube-context=prod"
-#     fi
-# fi
-# **********************************************************************
-
+# For the global --kube-context flag
+if [ ! -z ${ROBOT_HELM_V3} ]; then
+    # Feature not available in v2
+    _completionTests_verifyCompletion "helm --kube-context " "dev1 dev2 accept prod"
+    _completionTests_verifyCompletion "helm upgrade --kube-context " "dev1 dev2 accept prod"
+    _completionTests_verifyCompletion "helm upgrade --kube-context d" "dev1 dev2"
+    if [ "$SHELL_TYPE" = bash ]; then
+        _completionTests_verifyCompletion "helm --kube-context=" "dev1 dev2 accept prod"
+    else
+        _completionTests_verifyCompletion "helm --kube-context=" "--kube-context=dev1 --kube-context=dev2 --kube-context=accept --kube-context=prod"
+    fi
+fi
 
 # Now requires a real cluster
 # # For the global --namespace flag
@@ -452,14 +443,12 @@ if [ ! -z ${ROBOT_HELM_V3} ]; then
     \rm $tmpFiles
 fi
 
-# ********* This tests are commented beacuse they are for 3.2 *********
-# # Dynamic completion for plugins
-# _completionTests_verifyCompletion "helm push " ""
-# _completionTests_verifyCompletion "helm 2to3 move config g" "gryffindor"
-# _completionTests_verifyCompletion "helm 2to3 -n dumbledore convert " "case-ns convert dumbledore"
-# _completionTests_verifyCompletion "helm 2to3 convert -s flag d" "dobby draco"
-# _completionTests_verifyCompletion "helm 2to3 convert " "hermione harry ron"
-# **********************************************************************
+# Dynamic completion for plugins
+_completionTests_verifyCompletion "helm push " ""
+_completionTests_verifyCompletion "helm 2to3 move config g" "gryffindor"
+_completionTests_verifyCompletion "helm 2to3 -n dumbledore convert " "case-ns convert dumbledore"
+_completionTests_verifyCompletion "helm 2to3 convert -s flag d" "dobby draco"
+_completionTests_verifyCompletion "helm 2to3 convert " "hermione harry ron"
 
 ##############################################################
 # Completion with helm called through an alias or using a path
@@ -505,10 +494,7 @@ if [ "$SHELL_TYPE" = bash ]; then
     _completionTests_verifyCompletion "helmAlias get hooks --kubec" "--kubeconfig= --kubeconfig"
     _completionTests_verifyCompletion "helmAlias repo remove zztest" "zztest1 zztest2"
     _completionTests_verifyCompletion "helmAlias plugin update pus" "push push-artifactory"
-    # ********* This tests are commented beacuse they are for 3.2 *********
-    # _completionTests_verifyCompletion "helmAlias upgrade --kube-context d" "dev1 dev2"
-    # **********************************************************************
-    
+    _completionTests_verifyCompletion "helmAlias upgrade --kube-context d" "dev1 dev2"
     # if [ ! -z ${ROBOT_HELM_V3} ]; then
     #     _completionTests_verifyCompletion "helmAlias --kube-context=mycontext --namespace " "braavos old-valyria yunkai"
     # fi
@@ -520,10 +506,7 @@ if [ "$SHELL_TYPE" = bash ]; then
     _completionTests_verifyCompletion "helmAliasWithVar get hooks --kubec" "--kubeconfig= --kubeconfig"
     _completionTests_verifyCompletion "helmAliasWithVar repo remove zztest" "zztest1 zztest2"
     _completionTests_verifyCompletion "helmAliasWithVar plugin update pus" "push push-artifactory"
-    # ********* This tests are commented beacuse they are for 3.2 *********
-    # _completionTests_verifyCompletion "helmAliasWithVar upgrade --kube-context d" "dev1 dev2"
-    # **********************************************************************
-    
+    _completionTests_verifyCompletion "helmAliasWithVar upgrade --kube-context d" "dev1 dev2"
     # if [ ! -z ${ROBOT_HELM_V3} ]; then
     #     _completionTests_verifyCompletion "helmAliasWithVar --kube-context=mycontext --namespace " "braavos old-valyria yunkai"
     # fi
@@ -534,10 +517,7 @@ _completionTests_verifyCompletion "$TMP_HELM_DIR/helm lis" "list"
 _completionTests_verifyCompletion "$TMP_HELM_DIR/helm completion z" "zsh"
 _completionTests_verifyCompletion "$TMP_HELM_DIR/helm repo remove zztest" "zztest1 zztest2"
 _completionTests_verifyCompletion "$TMP_HELM_DIR/helm plugin update pus" "push push-artifactory"
-# ********* This tests are commented beacuse they are for 3.2 *********
-# _completionTests_verifyCompletion "$TMP_HELM_DIR/helm upgrade --kube-context d" "dev1 dev2"
-# **********************************************************************
-
+_completionTests_verifyCompletion "$TMP_HELM_DIR/helm upgrade --kube-context d" "dev1 dev2"
 # if [ ! -z ${ROBOT_HELM_V3} ]; then
 #     _completionTests_verifyCompletion "$TMP_HELM_DIR/helm --kube-context=mycontext --namespace " "braavos old-valyria yunkai"
 # fi
@@ -555,10 +535,7 @@ _completionTests_verifyCompletion "./helm lis" "list"
 _completionTests_verifyCompletion "./helm completion z" "zsh"
 _completionTests_verifyCompletion "./helm repo remove zztest" "zztest1 zztest2"
 _completionTests_verifyCompletion "./helm plugin update pus" "push push-artifactory"
-# ********* This tests are commented beacuse they are for 3.2 *********
-# _completionTests_verifyCompletion "./helm upgrade --kube-context d" "dev1 dev2"
-# **********************************************************************
-
+_completionTests_verifyCompletion "./helm upgrade --kube-context d" "dev1 dev2"
 # if [ ! -z ${ROBOT_HELM_V3} ]; then
 #     _completionTests_verifyCompletion "./helm --kube-context=mycontext --namespace " "braavos old-valyria yunkai"
 # fi
@@ -583,10 +560,7 @@ _completionTests_verifyCompletion "$TMP_HELM_DIR/myhelm lis" "list"
 _completionTests_verifyCompletion "$TMP_HELM_DIR/myhelm completion z" "zsh"
 _completionTests_verifyCompletion "$TMP_HELM_DIR/myhelm repo remove zztest" "zztest1 zztest2"
 _completionTests_verifyCompletion "$TMP_HELM_DIR/myhelm plugin update pus" "push push-artifactory"
-# ********* This tests are commented beacuse they are for 3.2 *********
-# _completionTests_verifyCompletion "$TMP_HELM_DIR/myhelm upgrade --kube-context d" "dev1 dev2"
-# **********************************************************************
-
+_completionTests_verifyCompletion "$TMP_HELM_DIR/myhelm upgrade --kube-context d" "dev1 dev2"
 # if [ ! -z ${ROBOT_HELM_V3} ]; then
 #     _completionTests_verifyCompletion "$TMP_HELM_DIR/myhelm --kube-context=mycontext --namespace " "braavos old-valyria yunkai"
 # fi
@@ -604,10 +578,7 @@ _completionTests_verifyCompletion "myhelm lis" "list"
 _completionTests_verifyCompletion "myhelm completion z" "zsh"
 _completionTests_verifyCompletion "myhelm repo remove zztest" "zztest1 zztest2"
 _completionTests_verifyCompletion "myhelm plugin update pus" "push push-artifactory"
-# ********* This tests are commented beacuse they are for 3.2 *********
-# _completionTests_verifyCompletion "myhelm upgrade --kube-context d" "dev1 dev2"
-# **********************************************************************
-
+_completionTests_verifyCompletion "myhelm upgrade --kube-context d" "dev1 dev2"
 # if [ ! -z ${ROBOT_HELM_V3} ]; then
 #     _completionTests_verifyCompletion "myhelm --kube-context=mycontext --namespace " "braavos old-valyria yunkai"
 # fi
