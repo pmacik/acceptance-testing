@@ -31,29 +31,38 @@ Library           ../lib/Kind.py
 Library           ../lib/Kubectl.py
 Library           ../lib/Helm.py
 Library           ../lib/Sh.py
+Library           ../lib/ClusterProvider.py
 Suite Setup       Suite Setup
 Suite Teardown    Suite Teardown
+
+*** Variables ***
+${provider}   kind
+${metadata}   1.14.6
 
 *** Test Cases ***
 #Helm works with Kubernetes 1.16.1
 #    Test Helm on Kubernetes version   1.16.1
 
-Helm works with Kubernetes 1.15.3
-    Test Helm on Kubernetes version   1.15.3
+Helm Works on Kubernetes
+    Test Helm on Kubernetes version     
 
-Helm works with Kubernetes 1.14.6
-    Test Helm on Kubernetes version   1.14.6
 
 *** Keyword ***
+
 Test Helm on Kubernetes version
-    Require cluster  True
+    # Require cluster  True
 
-    ${helm_version} =  Get Environment Variable  ROBOT_HELM_V3  "v2"
-    Pass Execution If  ${helm_version} == 'v2'  Helm v2 not supported. Skipping test.
+    # ${helm_version} =  Get Environment Variable  ROBOT_HELM_V3  "v2"
+    # Pass Execution If  ${helm_version} == 'v2'  Helm v2 not supported. Skipping test.
+    # ${dic}   Create Dictionary  version="1.17.0"  provider="kind"
+    # ${provider}=   ClusterProvider.new provider  kind   ${dic}
+    # ${provider}.Create cluster
+    ${cluster}=   ClusterProvider.Setup Cluster   ${provider}    ${metadata}
+    ${ctx}=    Call Method     ${cluster}     setup_cluster
+    #Create test cluster with kube version    ${dic['version']}
 
-    [Arguments]    ${kube_version}
-    Create test cluster with kube version    ${kube_version}
-
+    Should pass  kubectl get nodes
+    Should pass  kubectl get pods --namespace=kube-system
     # Add new test cases here
     Verify --wait flag works as expected
 

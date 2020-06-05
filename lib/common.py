@@ -4,6 +4,7 @@ import time
 
 NOW = time.strftime('%Y%m%d%H%M%S')
 
+
 class CommandRunner(object):
     def __init__(self):
         self.rc = 0
@@ -18,7 +19,8 @@ class CommandRunner(object):
 
     def return_code_should_not_be(self, expected_rc):
         if int(expected_rc) == self.rc:
-            raise AssertionError('Expected return code not to be "%s".' % expected_rc)
+            raise AssertionError(
+                'Expected return code not to be "%s".' % expected_rc)
 
     def output_contains(self, s):
         if s not in self.stdout:
@@ -38,6 +40,6 @@ class CommandRunner(object):
             tmp = []
             for x in stdout.split('\n'):
                 print(x)
-                if not x.startswith('+ '): # Remove debug lines that start with "+ "
+                if not x.startswith('+ '):  # Remove debug lines that start with "+ "
                     tmp.append(x)
             self.stdout = '\n'.join(tmp)

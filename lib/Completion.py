@@ -15,6 +15,7 @@
 
 import common
 
+
 class Completion(common.CommandRunner):
     def run_all_completion_tests(self):
         cmd = 'scripts/completion-tests/test-completion.sh'
