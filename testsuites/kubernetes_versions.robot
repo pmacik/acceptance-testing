@@ -52,6 +52,7 @@ Helm Works on Kubernetes
 Test Helm on Kubernetes version
     
     ${cluster}=   ClusterProvider.Setup Cluster   ${provider}    ${metadata}
+    Set Global Variable     ${cluster}
     ${ctx}=    Call Method     ${cluster}     setup_cluster
 
     Should pass  kubectl get nodes
@@ -129,4 +130,4 @@ Suite Setup
     Kind.Cleanup all test clusters
 
 Suite Teardown
-    Kind.Cleanup all test clusters
+    Call Method     ${cluster}    delete_cluster

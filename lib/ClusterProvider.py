@@ -1,8 +1,8 @@
 import common
 import subprocess
-from robot.api import logger
 import os
 import configs
+from robot.api import logger
 
 ROBOT_LIBRARY_SCOPE = 'SUITE'
 
@@ -50,7 +50,7 @@ class SetupCluster():
             self.rc = process.returncode
             tmp = []
             for x in stdout.split('\n'):
-                logger.console(x)
+                logger.debug(x)
                 if not x.startswith('+ '):  # Remove debug lines that start with "+ "
                     tmp.append(x)
             self.stdout = '\n'.join(tmp)
