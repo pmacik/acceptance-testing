@@ -121,7 +121,7 @@ echo;echo;
 docker build -t ${BASH4_IMAGE} - <<- EOF
    FROM bash:4.4
    RUN apk update && apk add bash-completion ca-certificates
-   COPY ${COMP_DIR}/ ${COMP_DIR}/
+   COPY ${COMP_DIR} ${COMP_DIR}
 EOF
 docker run --rm \
            -e ROBOT_HELM_V3=${ROBOT_HELM_V3} \
@@ -146,7 +146,7 @@ docker build -t ${BASH3_IMAGE} - <<- EOF
    RUN mkdir /usr/share/bash-completion && \
        wget -qO - https://github.com/scop/bash-completion/archive/1.3.tar.gz | \
             tar xvz -C /usr/share/bash-completion --strip-components 1 bash-completion-1.3/bash_completion
-   COPY ${COMP_DIR}/ ${COMP_DIR}/
+   COPY ${COMP_DIR} ${COMP_DIR}
 EOF
 docker run --rm \
            -e BASH_COMPLETION=/usr/share/bash-completion \
@@ -166,7 +166,7 @@ echo;echo;
 docker build -t ${BASH_IMAGE} - <<- EOF
    FROM centos
    RUN yum install -y bash-completion which
-   COPY ${COMP_DIR}/ ${COMP_DIR}/
+   COPY ${COMP_DIR} ${COMP_DIR}
 EOF
 docker run --rm \
            -e ROBOT_HELM_V3=${ROBOT_HELM_V3} \
@@ -185,7 +185,7 @@ docker build -t ${ZSH_IMAGE} - <<- EOF
    FROM zshusers/zsh:5.7
    # This will install the SSL certificates necessary for helm repo update to work
    RUN apt-get update && apt-get install -y wget
-   COPY ${COMP_DIR}/ ${COMP_DIR}/
+   COPY ${COMP_DIR} ${COMP_DIR}
 EOF
 docker run --rm \
            -e ROBOT_HELM_V3=${ROBOT_HELM_V3} \
@@ -204,7 +204,7 @@ echo;echo;
 docker build -t ${ZSH_IMAGE} - <<- EOF
    FROM alpine
    RUN apk update && apk add zsh ca-certificates
-   COPY ${COMP_DIR}/ ${COMP_DIR}/
+   COPY ${COMP_DIR} ${COMP_DIR}
 EOF
 docker run --rm \
            -e ROBOT_HELM_V3=${ROBOT_HELM_V3} \
