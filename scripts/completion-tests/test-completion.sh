@@ -201,7 +201,7 @@ docker run --rm \
 ZSH_IMAGE=completion-zsh-alpine
 
 echo;echo;
-docker build -t ${ZSH_IMAGE} -f - {COMP_DIR} <<- EOF
+docker build -t ${ZSH_IMAGE} -f - ${COMP_DIR} <<- EOF
    FROM alpine
    RUN apk update && apk add zsh ca-certificates
    COPY ./ ${COMP_DIR}/
