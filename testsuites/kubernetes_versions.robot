@@ -44,20 +44,20 @@ ${metadata}   1.14.6
 #    Test Helm on Kubernetes version   1.16.1
 
 Helm Works on Kubernetes
-    Test Helm on Kubernetes version     
+    Test Helm on Kubernetes version
 
 
 *** Keyword ***
 
 Test Helm on Kubernetes version
-    
+
     ${cluster}=   ClusterProvider.Setup Cluster   ${provider}    ${metadata}
     Set Global Variable     ${cluster}
     ${ctx}=    Call Method     ${cluster}     setup_cluster
 
     Should pass  kubectl get nodes
     Should pass  kubectl get pods --namespace=kube-system
-    
+
     # Add new test cases here
     Verify --wait flag works as expected
 

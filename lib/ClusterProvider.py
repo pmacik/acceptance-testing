@@ -1,11 +1,13 @@
 import common
 import subprocess
 import os
-import configs
 from robot.api import logger
 
 ROBOT_LIBRARY_SCOPE = 'SUITE'
+AUTH_COMMAND = ''
 
+def auth_wrap(cmd):
+    return AUTH_COMMAND+' && '+cmd
 
 def load_script(provider):
     path = 'scripts/cluster_providers/'
@@ -15,10 +17,8 @@ def load_script(provider):
         return path + 'kind.sh'
     return "invalid"
 
-
 def setup_cluster(provider, metadata):
     return SetupCluster(provider, metadata)
-
 
 class SetupCluster():
     def __init__(self, provider, metadata):
@@ -28,17 +28,17 @@ class SetupCluster():
         self.cluster_name = 'helm-acceptance-test-' + self.metadata
 
     def setup_cluster(self):
+        global AUTH_COMMAND
         self.call_cluster_provisioner_script('create_cluster')
-        configs.AUTH_COMMAND = self.call_cluster_provisioner_script(
+        AUTH_COMMAND = self.call_cluster_provisioner_script(
             'get_cluster_auth')
 
     def delete_cluster(self):
-        self.call_cluster_provisioner_script('delete_cluster')
+        return self.call_cluster_provisioner_script('delete_cluster')
 
     def get_cluster_auth(self):
-        configs.AUTH_COMMAND = self.call_cluster_provisioner_script(
+        return self.call_cluster_provisioner_script(
             'get_cluster_auth')
-        return configs.AUTH_COMMAND
 
     def call_cluster_provisioner_script(self, cmd, detach=False):
         c = f'source {load_script(self.provider)}; {cmd} {self.metadata} {self.cluster_name}'
