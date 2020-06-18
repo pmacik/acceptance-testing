@@ -6,42 +6,37 @@ from robot.api import logger
 ROBOT_LIBRARY_SCOPE = 'SUITE'
 AUTH_COMMAND = ''
 
+
 def auth_wrap(cmd):
     return AUTH_COMMAND+' && '+cmd
 
-def load_script(provider):
-    path = 'scripts/cluster_providers/'
-    if provider == 'kube':
-        return path + 'kube.sh'
-    if provider == 'kind':
-        return path + 'kind.sh'
-    return "invalid"
 
-def setup_cluster(provider, metadata):
-    return SetupCluster(provider, metadata)
+def setup_cluster():
+    return SetupCluster()
+
 
 class SetupCluster():
-    def __init__(self, provider, metadata):
-        self.provider = provider
-        self.metadata = metadata
+    def __init__(self):
+        self.provider = os.getenv("CLUSTER_PROVIDER", default='kind')
         self.base_cmd = 'bash -c'
-        self.cluster_name = 'helm-acceptance-test-' + self.metadata
+        self.cluster_name = 'helm-acceptance-test-' + \
+            os.getenv("CLUSTER_VERSION")
 
     def setup_cluster(self):
         global AUTH_COMMAND
-        self.call_cluster_provisioner_script('create_cluster')
+        self.call_cluster_provisioner_script(f'{self.provider}_create_cluster')
         AUTH_COMMAND = self.call_cluster_provisioner_script(
-            'get_cluster_auth')
+            f'{self.provider}_get_cluster_auth')
 
     def delete_cluster(self):
-        return self.call_cluster_provisioner_script('delete_cluster')
+        return self.call_cluster_provisioner_script(f'{self.provider}_delete_cluster')
 
     def get_cluster_auth(self):
         return self.call_cluster_provisioner_script(
-            'get_cluster_auth')
+            f'{self.provider}_get_cluster_auth')
 
     def call_cluster_provisioner_script(self, cmd, detach=False):
-        c = f'source {load_script(self.provider)}; {cmd} {self.metadata} {self.cluster_name}'
+        c = f'{cmd} {self.cluster_name}'
         process = subprocess.Popen(['/bin/bash', '-c', c],
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.STDOUT)

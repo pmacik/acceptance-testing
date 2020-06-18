@@ -27,21 +27,13 @@ Documentation     Verify Helm functionality on multiple Kubernetes versions.
 ...
 Library           String
 Library           OperatingSystem
-Library           ../lib/Kind.py
 Library           ../lib/Kubectl.py
 Library           ../lib/Helm.py
 Library           ../lib/Sh.py
 Library           ../lib/ClusterProvider.py
-Suite Setup       Suite Setup
 Suite Teardown    Suite Teardown
 
-*** Variables ***
-${provider}   kind
-${metadata}   1.14.6
-
 *** Test Cases ***
-#Helm works with Kubernetes 1.16.1
-#    Test Helm on Kubernetes version   1.16.1
 
 Helm Works on Kubernetes
     Test Helm on Kubernetes version
@@ -51,7 +43,7 @@ Helm Works on Kubernetes
 
 Test Helm on Kubernetes version
 
-    ${cluster}=   ClusterProvider.Setup Cluster   ${provider}    ${metadata}
+    ${cluster}=   ClusterProvider.Setup Cluster
     Set Global Variable     ${cluster}
     ${ctx}=    Call Method     ${cluster}     setup_cluster
 
@@ -126,8 +118,6 @@ Verify --wait flag works as expected
     # Delete bad release
     Should pass  helm delete wait-flag-bad
 
-Suite Setup
-    Kind.Cleanup all test clusters
 
 Suite Teardown
     Call Method     ${cluster}    delete_cluster
