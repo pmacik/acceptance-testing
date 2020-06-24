@@ -11,11 +11,7 @@ def auth_wrap(cmd):
     return AUTH_COMMAND+' && '+cmd
 
 
-def setup_cluster():
-    return SetupCluster()
-
-
-class SetupCluster():
+class ClusterProvider(common.CommandRunner):
     def __init__(self):
         self.provider = os.getenv("CLUSTER_PROVIDER", default='kind')
         self.base_cmd = 'bash -c'
@@ -24,7 +20,7 @@ class SetupCluster():
 
     def setup_cluster(self):
         global AUTH_COMMAND
-        self.call_cluster_provisioner_script(f'{self.provider}_create_cluster')
+        self.call_cluster_provisioner_script(f'{self.provider}_setup_cluster')
         AUTH_COMMAND = self.call_cluster_provisioner_script(
             f'{self.provider}_get_cluster_auth')
 
@@ -37,16 +33,5 @@ class SetupCluster():
 
     def call_cluster_provisioner_script(self, cmd, detach=False):
         c = f'{cmd} {self.cluster_name}'
-        process = subprocess.Popen(['/bin/bash', '-c', c],
-                                   stdout=subprocess.PIPE,
-                                   stderr=subprocess.STDOUT)
-        if not detach:
-            stdout = process.communicate()[0].strip().decode()
-            self.rc = process.returncode
-            tmp = []
-            for x in stdout.split('\n'):
-                logger.debug(x)
-                if not x.startswith('+ '):  # Remove debug lines that start with "+ "
-                    tmp.append(x)
-            self.stdout = '\n'.join(tmp)
+        self.run_command(c)
         return self.stdout

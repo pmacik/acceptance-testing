@@ -42,17 +42,20 @@ Helm Works on Kubernetes
 *** Keyword ***
 
 Test Helm on Kubernetes version
-
-    ${cluster}=   ClusterProvider.Setup Cluster
-    Set Global Variable     ${cluster}
-    ${ctx}=    Call Method     ${cluster}     setup_cluster
-
-    Should pass  kubectl get nodes
-    Should pass  kubectl get pods --namespace=kube-system
-
+    Require cluster  True
+    ${helm_version} =  Get Environment Variable  ROBOT_HELM_V3  "v2"
+    Pass Execution If  ${helm_version} == 'v2'  Helm v2 not supported. Skipping test.
+    Create test cluster with kube version   %{CLUSTER_VERSION}
     # Add new test cases here
     Verify --wait flag works as expected
+    ClusterProvider.Delete Cluster
 
+
+Create test cluster with kube version
+    [Arguments]    ${kube_version}
+    ClusterProvider.Setup Cluster
+    Should pass  kubectl get nodes
+    Should pass  kubectl get pods --namespace=kube-system
 
 Verify --wait flag works as expected
     # Install nginx chart in a good state, using --wait flag
@@ -120,4 +123,4 @@ Verify --wait flag works as expected
 
 
 Suite Teardown
-    Call Method     ${cluster}    delete_cluster
+    ClusterProvider.Delete Cluster
