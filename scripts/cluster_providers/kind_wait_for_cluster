@@ -1,0 +1,8 @@
+#!/bin/bash
+
+kubectl config set-context kind-$CLUSTER_VERSION
+export STATUS=""
+while [ "${STATUS}" != "Ready" ]; do
+   sleep 10
+   export STATUS=$(kubectl get nodes | tail -n1 | awk '{print $2}')
+done

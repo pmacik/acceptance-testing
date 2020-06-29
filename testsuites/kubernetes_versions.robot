@@ -27,33 +27,42 @@ Documentation     Verify Helm functionality on multiple Kubernetes versions.
 ...
 Library           String
 Library           OperatingSystem
+Library           ../lib/ClusterProvider.py
 Library           ../lib/Kubectl.py
 Library           ../lib/Helm.py
 Library           ../lib/Sh.py
-Library           ../lib/ClusterProvider.py
+Suite Setup       Suite Setup
 Suite Teardown    Suite Teardown
 
 *** Test Cases ***
+#Helm works with Kubernetes 1.16.1
+#    Test Helm on Kubernetes version   1.16.1
 
-Helm Works on Kubernetes
-    Test Helm on Kubernetes version
-
+#Helm works with Kubernetes 1.15.3
+#    Test Helm on Kubernetes version   1.15.3
+#
+Helm works with Kubernetes
+    Test Helm on Kubernetes version   %{CLUSTER_VERSION}
 
 *** Keyword ***
-
 Test Helm on Kubernetes version
     Require cluster  True
+
     ${helm_version} =  Get Environment Variable  ROBOT_HELM_V3  "v2"
     Pass Execution If  ${helm_version} == 'v2'  Helm v2 not supported. Skipping test.
-    Create test cluster with kube version   %{CLUSTER_VERSION}
+
+    [Arguments]    ${kube_version}
+    Create test cluster with kube version    ${kube_version}
+
     # Add new test cases here
     Verify --wait flag works as expected
-    ClusterProvider.Delete Cluster
 
+    ClusterProvider.Delete test cluster
 
 Create test cluster with kube version
     [Arguments]    ${kube_version}
-    ClusterProvider.Setup Cluster
+    ClusterProvider.Create test cluster with Kubernetes version  ${kube_version}
+    ClusterProvider.Wait for cluster
     Should pass  kubectl get nodes
     Should pass  kubectl get pods --namespace=kube-system
 
@@ -121,6 +130,8 @@ Verify --wait flag works as expected
     # Delete bad release
     Should pass  helm delete wait-flag-bad
 
+Suite Setup
+    ClusterProvider.Cleanup all test clusters
 
 Suite Teardown
-    ClusterProvider.Delete Cluster
+    ClusterProvider.Cleanup all test clusters

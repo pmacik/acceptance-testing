@@ -1,14 +1,8 @@
 #!/bin/bash
 
-function wait_till_cluster_up() {
-   kubectl config set-context kind-$CLUSTER_VERSION
-   export STATUS=""
-   while [ "${STATUS}" != "Ready" ]; do
-      sleep 10
-      export STATUS=$(kubectl get nodes | tail -n1 | awk '{print $2}')
-   done
-}
-
-kind create cluster --name $CLUSTER_VERSION --image kindest/node:v$CLUSTER_VERSION
-wait_till_cluster_up $CLUSTER_VERSION
-
+EXISTING_CLUSTER=KIND_$(echo $CLUSTER_VERSION | sed -e "s/\./\_/g")
+if [[ -z "${EXISTING_CLUSTER}" ]]; then
+  kind create cluster --name $1 --image kindest/node:v$CLUSTER_VERSION
+else
+  echo "Not Creating cluster"
+fi

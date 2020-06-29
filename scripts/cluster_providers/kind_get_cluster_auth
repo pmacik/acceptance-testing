@@ -1,3 +1,9 @@
 #!/bin/bash
 
-echo "kubectl config set-context kind-$1"
+EXISTING_CLUSTER=KIND_$(echo $CLUSTER_VERSION | sed -e "s/\./\_/g")
+if [[ -z "${EXISTING_CLUSTER}" ]]; then
+  echo "kubectl config set-context kind-$1"
+else
+  eval var=${!EXISTING_CLUSTER}
+  echo "kubectl config set-context $var"
+fi

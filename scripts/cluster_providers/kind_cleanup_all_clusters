@@ -2,7 +2,7 @@
 
 EXISTING_CLUSTER=KIND_$(echo $CLUSTER_VERSION | sed -e "s/\./\_/g")
 if [[ -z "${EXISTING_CLUSTER}" ]]; then
-  kind delete cluster --name=$1
+  kind delete clusters --all
 else
   echo "Not deleting cluster"
 fi
