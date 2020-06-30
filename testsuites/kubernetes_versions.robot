@@ -34,6 +34,7 @@ Library           ../lib/Sh.py
 Suite Setup       Suite Setup
 Suite Teardown    Suite Teardown
 
+
 *** Test Cases ***
 #Helm works with Kubernetes 1.16.1
 #    Test Helm on Kubernetes version   1.16.1
@@ -42,7 +43,11 @@ Suite Teardown    Suite Teardown
 #    Test Helm on Kubernetes version   1.15.3
 #
 Helm works with Kubernetes
-    Test Helm on Kubernetes version   %{CLUSTER_VERSION}
+    @{versions} =   Split String    %{CLUSTER_VERSION}    ,
+    FOR    ${i}    IN    @{versions}
+        Set Global Variable     ${version}    ${i}
+        Test Helm on Kubernetes version   ${version}
+    END
 
 *** Keyword ***
 Test Helm on Kubernetes version

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-kubectl config set-context kind-$CLUSTER_VERSION
+kubectl config set-context kind-$2
 export STATUS=""
 while [ "${STATUS}" != "Ready" ]; do
    sleep 10
