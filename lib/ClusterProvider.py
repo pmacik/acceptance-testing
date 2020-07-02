@@ -24,7 +24,7 @@ class ClusterProvider(common.CommandRunner):
         global AUTH_COMMAND
         self.cluster_name = f'helm-acceptance-test-{kube_version}'
         self.call_cluster_provisioner_function(
-            'setup_cluster')
+            'create_cluster')
         AUTH_COMMAND = self.call_cluster_provisioner_function(
             'get_cluster_auth')
 
@@ -43,4 +43,6 @@ class ClusterProvider(common.CommandRunner):
     def call_cluster_provisioner_function(self, func, args=''):
         c = f'{self.provider}_{func} {self.cluster_name} {self.get_current_version()} {args}'
         self.run_command(c)
+        if self.rc != 0:
+            raise Exception(f'Failed to run cmd {c} received output {self.stdout}')
         return self.stdout
