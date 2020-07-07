@@ -34,12 +34,15 @@ fi
 
 set_shell_debug_level 2
 REQUIRED_SYSTEM_COMMANDS=(
-    "kind"
     "kubectl"
     "python3"
     "pip"
     "virtualenv"
 )
+
+if [ "$CLUSTER_PROVIDER" == kind ]; then
+   REQUIRED_SYSTEM_COMMANDS+=(kind)
+fi
 
 set_shell_debug_level 3
 for C in ${REQUIRED_SYSTEM_COMMANDS[@]}; do
