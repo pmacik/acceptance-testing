@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo "No need to wait for externally created cluster"

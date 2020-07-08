@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export KUBECONFIG=$2
+kubectl delete pv test-pv
+echo "Not deleting external cluster"

@@ -22,3 +22,7 @@ class Kubectl(common.CommandRunner):
             num_expected+' ]'
         self.run_command(auth_wrap(cmd))
 
+    def deamon_set_pods_with_prefix(self, namespace, pod_prefix):
+        cmd = 'kubectl get nodes | grep Ready | wc -l'
+        self.run_command(auth_wrap(cmd))
+        self.pods_with_prefix_are_running(namespace, pod_prefix, self.stdout)

@@ -90,7 +90,7 @@ Verify --wait flag works as expected
 
     Kubectl.Pods with prefix are running    default    wait-flag-good-nginx-ext-    3
     Kubectl.Return code should be   0
-    Kubectl.Pods with prefix are running    default    wait-flag-good-nginx-fluentd-es-    1
+    Kubectl.Deamon Set Pods With Prefix    default    wait-flag-good-nginx-fluentd-es-    
     Kubectl.Return code should be   0
     Kubectl.Pods with prefix are running    default    wait-flag-good-nginx-v1-    3
     Kubectl.Return code should be   0
@@ -121,7 +121,7 @@ Verify --wait flag works as expected
 
     Kubectl.Pods with prefix are running    default    wait-flag-bad-nginx-ext-    3
     Kubectl.Return code should not be   0
-    Kubectl.Pods with prefix are running    default    wait-flag-bad-nginx-fluentd-es-    1
+    Kubectl.Deamon Set Pods With Prefix    default    wait-flag-bad-nginx-fluentd-es-    
     Kubectl.Return code should not be   0
     Kubectl.Pods with prefix are running    default    wait-flag-bad-nginx-v1-    3
     Kubectl.Return code should not be   0
