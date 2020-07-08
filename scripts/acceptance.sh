@@ -101,7 +101,7 @@ SUITES_TO_RUN=${SUITES_TO_RUN:-testsuites}
 if [ ! -z "${ROBOT_HELM_PATH}" ]; then
    export PATH="${ROBOT_HELM_PATH}:${PATH}"
 fi
-export PATH="${ROBOT_VENV_DIR}/bin:${PATH}"
+export PATH="${ROBOT_VENV_DIR}/bin:${PATH}:${DIR}/scripts/cluster_providers"
 
 export XDG_CACHE_HOME=${TMP_DIR}/cache && mkdir -p ${XDG_CACHE_HOME}
 export XDG_CONFIG_HOME=${TMP_DIR}/config && mkdir -p ${XDG_CONFIG_HOME}
