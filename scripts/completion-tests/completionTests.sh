@@ -197,12 +197,17 @@ source /dev/stdin <<- EOF
 EOF
 
 allHelmCommands="completion create dependency env 2to3 get history install lint list package plugin pull push push-artifactory repo rollback search show status template test uninstall upgrade verify version"
+echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+echo "Shell Type: $SHELL_TYPE"
+echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 if [ "$SHELL_TYPE" = bash ]; then
-    allHelmGlobalFlags="--add-dir-header --alsologtostderr --debug --kube-apiserver --kube-apiserver= --kube-context --kube-context= --kube-token --kube-token= --kubeconfig --kubeconfig= --log-backtrace-at --log-backtrace-at= --log-dir --log-dir= --log-file --log-file-max-size --log-file-max-size= --log-file= --logtostderr --namespace --namespace= --registry-config --registry-config= --repository-cache --repository-cache= --repository-config --repository-config= --skip-headers --skip-log-headers --stderrthreshold --stderrthreshold= --v --v= --vmodule --vmodule= -n -v"
-    allHelmLongFlags="--add-dir-header --alsologtostderr --debug --kube-apiserver --kube-apiserver= --kube-context --kube-context= --kube-token --kube-token= --kubeconfig --kubeconfig= --log-backtrace-at --log-backtrace-at= --log-dir --log-dir= --log-file --log-file-max-size --log-file-max-size= --log-file= --logtostderr --namespace --namespace= --registry-config --registry-config= --repository-cache --repository-cache= --repository-config --repository-config= --skip-headers --skip-log-headers --stderrthreshold --stderrthreshold= --v --v= --vmodule --vmodule="
+    allHelmGlobalFlags="--debug --kube-apiserver --kube-apiserver= --kube-as-group --kube-as-group= --kube-as-user --kube-as-user= --kube-context --kube-context= --kube-token --kube-token= --kubeconfig --kubeconfig= --namespace --namespace= --registry-config --registry-config= --repository-cache --repository-cache= --repository-config --repository-config= -n"
+    allHelmLongFlags="--debug --kube-apiserver --kube-apiserver= --kube-as-group --kube-as-group= --kube-as-user --kube-as-user= --kube-context --kube-context= --kube-token --kube-token= --kubeconfig --kubeconfig= --namespace --namespace= --registry-config --registry-config= --repository-cache --repository-cache= --repository-config --repository-config="
 else
-    allHelmGlobalFlags="--add-dir-header --alsologtostderr --debug --kube-apiserver --kube-apiserver --kube-apiserver --kube-context --kube-context --kube-context --kube-token --kube-token --kube-token --kubeconfig --kubeconfig --kubeconfig --log-backtrace-at --log-backtrace-at --log-backtrace-at --log-dir --log-dir --log-dir --log-file --log-file --log-file --log-file-max-size --log-file-max-size --log-file-max-size --logtostderr --namespace --namespace --namespace --registry-config --registry-config --registry-config --repository-cache --repository-cache --repository-cache --repository-config --repository-config --repository-config --skip-headers --skip-log-headers --stderrthreshold --stderrthreshold --stderrthreshold --v --v --v --vmodule --vmodule --vmodule -n -v"
-    allHelmLongFlags="--add-dir-header --alsologtostderr --debug --kube-apiserver --kube-apiserver --kube-apiserver --kube-context --kube-context --kube-context --kube-token --kube-token --kube-token --kubeconfig --kubeconfig --kubeconfig --log-backtrace-at --log-backtrace-at --log-backtrace-at --log-dir --log-dir --log-dir --log-file --log-file --log-file --log-file-max-size --log-file-max-size --log-file-max-size --logtostderr --namespace --namespace --namespace --registry-config --registry-config --registry-config --repository-cache --repository-cache --repository-cache --repository-config --repository-config --repository-config --skip-headers --skip-log-headers --stderrthreshold --stderrthreshold --stderrthreshold --v --v --v --vmodule --vmodule --vmodule"
+    # allHelmGlobalFlags="--debug --kube-apiserver --kube-as-group --kube-as-user --kube-context --kube-token --kubeconfig --namespace --registry-config --repository-cache --repository-config -n"
+    allHelmGlobalFlags="--debug --kube-apiserver --kube-apiserver --kube-apiserver --kube-as-group --kube-as-group --kube-as-group --kube-as-user --kube-as-user --kube-as-user --kube-context --kube-context --kube-context --kube-token --kube-token --kube-token --kubeconfig --kubeconfig --kubeconfig --namespace --namespace --namespace --registry-config --registry-config --registry-config --repository-cache --repository-cache --repository-cache --repository-config --repository-config --repository-config -n"
+    # allHelmLongFlags="--debug --kube-apiserver --kube-as-group --kube-as-user --kube-context --kube-token --kubeconfig --namespace --registry-config --repository-cache --repository-config"
+    allHelmLongFlags="--debug --kube-apiserver --kube-apiserver --kube-apiserver --kube-as-group --kube-as-group --kube-as-group --kube-as-user --kube-as-user --kube-as-user --kube-context --kube-context --kube-context --kube-token --kube-token --kube-token --kubeconfig --kubeconfig --kubeconfig --namespace --namespace --namespace --registry-config --registry-config --registry-config --repository-cache --repository-cache --repository-cache --repository-config --repository-config --repository-config"
 fi
 
 #####################
@@ -238,7 +243,7 @@ else
     _completionTests_verifyCompletion "helm get " "all hooks manifest notes values"
 fi
 _completionTests_verifyCompletion "helm get h" "hooks"
-_completionTests_verifyCompletion "helm completion " "bash zsh"
+_completionTests_verifyCompletion "helm completion " "bash fish zsh"
 _completionTests_verifyCompletion "helm completion z" "zsh"
 _completionTests_verifyCompletion "helm plugin " "install list uninstall update"
 _completionTests_verifyCompletion "helm plugin u" "uninstall update"
@@ -256,13 +261,13 @@ _completionTests_verifyCompletion "helm plugin --namespace ns " "install list un
 _completionTests_verifyCompletion "helm plugin --namespace ns u" "uninstall update"
 
 # With validArgs
-_completionTests_verifyCompletion "helm completion " "bash zsh"
+_completionTests_verifyCompletion "helm completion " "bash fish zsh"
 _completionTests_verifyCompletion "helm completion z" "zsh"
-_completionTests_verifyCompletion "helm --debug completion " "bash zsh"
+_completionTests_verifyCompletion "helm --debug completion " "bash fish zsh"
 _completionTests_verifyCompletion "helm --debug completion z" "zsh"
-_completionTests_verifyCompletion "helm -n ns completion " "bash zsh"
+_completionTests_verifyCompletion "helm -n ns completion " "bash fish zsh"
 _completionTests_verifyCompletion "helm -n ns completion z" "zsh"
-_completionTests_verifyCompletion "helm --namespace ns completion " "bash zsh"
+_completionTests_verifyCompletion "helm --namespace ns completion " "bash fish zsh"
 _completionTests_verifyCompletion "helm --namespace ns completion z" "zsh"
 
 # Completion of flags
@@ -274,12 +279,12 @@ else
     _completionTests_verifyCompletion "helm --kubecon" "--kubeconfig --kubeconfig --kubeconfig"
 fi
 if [ ! -z ${ROBOT_HELM_V3} ]; then
-    _completionTests_verifyCompletion "helm -v" "-v"
+    # _completionTests_verifyCompletion "helm -v" "-v"
     if [ "$SHELL_TYPE" = bash ]; then
-        _completionTests_verifyCompletion "helm --v" "--v= --vmodule= --v --vmodule"
+        # _completionTests_verifyCompletion "helm --v" "--v= --vmodule= --v --vmodule"
         _completionTests_verifyCompletion "helm --name" "--namespace= --namespace"
     else
-        _completionTests_verifyCompletion "helm --v" "--v --vmodule --v --vmodule --v --vmodule"
+        # _completionTests_verifyCompletion "helm --v" "--v --vmodule --v --vmodule --v --vmodule"
         _completionTests_verifyCompletion "helm --name" "--namespace --namespace --namespace"
     fi
 fi
@@ -289,13 +294,13 @@ _completionTests_verifyCompletion "helm --" "$allHelmLongFlags"
 _completionTests_verifyCompletion "helm show -" "$allHelmGlobalFlags"
 _completionTests_verifyCompletion "helm show --" "$allHelmLongFlags"
 
-if [ "$SHELL_TYPE" = bash ]; then
-    _completionTests_verifyCompletion "helm --s" "--skip-headers --skip-log-headers --stderrthreshold --stderrthreshold="
-    _completionTests_verifyCompletion "helm show --s" "--skip-headers --skip-log-headers --stderrthreshold --stderrthreshold="
-else
-    _completionTests_verifyCompletion "helm --s" "--skip-headers --skip-log-headers --stderrthreshold --stderrthreshold --stderrthreshold"
-    _completionTests_verifyCompletion "helm show --s" "--skip-headers --skip-log-headers --stderrthreshold --stderrthreshold --stderrthreshold"
-fi
+# if [ "$SHELL_TYPE" = bash ]; then
+#     _completionTests_verifyCompletion "helm --s" "--skip-headers --skip-log-headers --stderrthreshold --stderrthreshold="
+#     _completionTests_verifyCompletion "helm show --s" "--skip-headers --skip-log-headers --stderrthreshold --stderrthreshold="
+# else
+#     _completionTests_verifyCompletion "helm --s" "--skip-headers --skip-log-headers --stderrthreshold --stderrthreshold --stderrthreshold"
+#     _completionTests_verifyCompletion "helm show --s" "--skip-headers --skip-log-headers --stderrthreshold --stderrthreshold --stderrthreshold"
+# fi
 
 _completionTests_verifyCompletion "helm -n" "-n"
 _completionTests_verifyCompletion "helm show -n" "-n"
