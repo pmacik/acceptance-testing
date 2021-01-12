@@ -197,9 +197,7 @@ source /dev/stdin <<- EOF
 EOF
 
 allHelmCommands="completion create dependency env 2to3 get history install lint list package plugin pull push push-artifactory repo rollback search show status template test uninstall upgrade verify version"
-echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 echo "Shell Type: $SHELL_TYPE"
-echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 if [ "$SHELL_TYPE" = bash ]; then
     allHelmGlobalFlags="--debug --kube-apiserver --kube-apiserver= --kube-as-group --kube-as-group= --kube-as-user --kube-as-user= --kube-context --kube-context= --kube-token --kube-token= --kubeconfig --kubeconfig= --namespace --namespace= --registry-config --registry-config= --repository-cache --repository-cache= --repository-config --repository-config= -n"
     allHelmLongFlags="--debug --kube-apiserver --kube-apiserver= --kube-as-group --kube-as-group= --kube-as-user --kube-as-user= --kube-context --kube-context= --kube-token --kube-token= --kubeconfig --kubeconfig= --namespace --namespace= --registry-config --registry-config= --repository-cache --repository-cache= --repository-config --repository-config="
